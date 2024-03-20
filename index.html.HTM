@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora com JavaScript</title>
+    <!-- Incluindo jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Incluindo jquery.maskMoney -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-maskmoney/3.0.2/jquery.maskMoney.min.js"></script>
+    <style>
+        /* Estilo para a tabela */
+        .resultado-table {
+            border-collapse: collapse; /* Mescla as bordas das células */
+            width: 100%;
+            margin-top: 20px; /* Adiciona espaço entre o campo de texto e a tabela */
+        }
+        
+        /* Estilo para as células da tabela */
+        .resultado-table th, .resultado-table td {
+            border: 1px solid #dddddd; /* Borda de 1px sólida cinza */
+            padding: 8px; /* Espaçamento interno das células */
+            text-align: center; /* Alinhamento do texto ao centro */
+        }
+
+        /* Estilo para a primeira linha da tabela (cabeçalho) */
+        .resultado-table th {
+            background-color: #f2f2f2; /* Cor de fundo cinza claro */
+        }
+    </style>
+</head>
+<body>
+
+<h2>SIMULADO FEMAGRI</h2>
+
+<form id="myForm">
+    <label for="numero">Número:</label>
+    <!-- Adicionando máscara de reais ao campo de entrada -->
+    <input type="text" id="numero" name="numero" required>
+    <button type="submit">Calcular</button>
+</form>
+
+<table class="resultado-table">
+    <thead>
+        <tr>
+            <th colspan="4">Simulação Veículo - Tabela Price</th>
+        </tr>
+        <tr>
+            <th>Valor</th>
+            <th>12x</th>
+            <th>24x</th>
+            <th>36x</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<table class="resultado-table">
+    <thead>
+        <tr>
+            <th colspan="4">CPR - Sac Decrescente - ANUAL</th>
+        </tr>
+        <tr>
+            <th>Valor</th>
+            <th>Parcela 1</th>
+            <th>Parcela 2</th>
+            <th>Parcela 3</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<table class="resultado-table">
+    <thead>
+        <tr>
+            <th colspan="5">CPR - Sac Decrescente - 4 ANOS</th>
+        </tr>
+        <tr>
+            <th>Valor</th>
+            <th>Parcela 1</th>
+            <th>Parcela 2</th>
+            <th>Parcela 3</th>
+            <th>Parcela 4</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function(){
+        // Adicionando máscara de reais ao campo de entrada
+        $('#numero').maskMoney({prefix:'R$ ', allowNegative: false, thousands:'.', decimal:',', affixesStay: false});
+
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // Evita que o formulário seja enviado e a página recarregue
+
+            // Obter o valor do campo de entrada
+            var valorEntrada = parseFloat($('#numero').maskMoney('unmasked')[0]);
+            
+            // Verificar se o valor é válido
+            if (isNaN(valorEntrada)) {
+                alert("Por favor, insira um número válido.");
+                return;
+            }
+
+            // Realizar as operações para Simulação Veículo - Tabela Price
+            var resultado1 = (valorEntrada / 1000) * 49.89;
+            var resultado2 = (valorEntrada / 1000) * 35.86;
+            var resultado3 = (valorEntrada / 1000) * 92.09;
+
+            // Realizar as operações para CPR - Sac Decrescente - ANUAL
+            var resultado4 = (valorEntrada / 1000) * 397.71; // Parcela 1
+            var resultado5 = (valorEntrada / 1000) * 425.99; // Parcela 2
+            var resultado6 = (valorEntrada / 1000) * 379.67; // Parcela 3
+
+            // Realizar as operações para CPR - Sac Decrescente - 4 ANOS
+            var resultado7 = (valorEntrada / 1000) * 314.38; // Parcela 1
+            var resultado8 = (valorEntrada / 1000) * 354.24; // Parcela 2
+            var resultado9 = (valorEntrada / 1000) * 319.49; // Parcela 3
+            var resultado10 = (valorEntrada / 1000) * 289.74; // Parcela 4
+
+            // Mostrar os resultados na tabela
+            var table1 = document.querySelectorAll(".resultado-table")[0].getElementsByTagName('tbody')[0];
+            var table2 = document.querySelectorAll(".resultado-table")[1].getElementsByTagName('tbody')[0];
+            var table3 = document.querySelectorAll(".resultado-table")[2].getElementsByTagName('tbody')[0];
+
+            // Limpar tabela antes de adicionar novos resultados
+            table1.innerHTML = '';
+            table2.innerHTML = '';
+            table3.innerHTML = '';
+
+            // Adicionar resultados para Simulação Veículo - Tabela Price
+            var newRow1 = table1.insertRow(0);
+            var cell1_1 = newRow1.insertCell(0);
+            var cell1_2 = newRow1.insertCell(1);
+            var cell1_3 = newRow1.insertCell(2);
+            var cell1_4 = newRow1.insertCell(3);
+            cell1_1.textContent = $('#numero').val();
+            cell1_2.textContent = resultado3.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell1_3.textContent = resultado1.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell1_4.textContent = resultado2.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Adicionar resultados para CPR - Sac Decrescente - ANUAL
+            var newRow2 = table2.insertRow(0);
+            var cell2_1 = newRow2.insertCell(0);
+            var cell2_2 = newRow2.insertCell(1);
+            var cell2_3 = newRow2.insertCell(2);
+            var cell2_4 = newRow2.insertCell(3);
+            cell2_1.textContent = $('#numero').val();
+            cell2_2.textContent = resultado4.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell2_3.textContent = resultado5.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell2_4.textContent = resultado6.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Adicionar resultados para CPR - Sac Decrescente - 4 ANOS
+            var newRow3 = table3.insertRow(0);
+            var cell3_1 = newRow3.insertCell(0);
+            var cell3_2 = newRow3.insertCell(1);
+            var cell3_3 = newRow3.insertCell(2);
+            var cell3_4 = newRow3.insertCell(3);
+            var cell3_5 = newRow3.insertCell(4);
+            cell3_1.textContent = $('#numero').val();
+            cell3_2.textContent = resultado7.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell3_3.textContent = resultado8.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell3_4.textContent = resultado9.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            cell3_5.textContent = resultado10.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            // Limpar o campo de entrada
+            $('#numero').val('');
+        });
+    });
+</script>
+
+</body>
+</html>
+
